@@ -1,20 +1,37 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchMessages = createAsyncThunk('rail-react/messages', async () => {
-  const response = await axios.get('http://localhost:3000/api/v1/greetings');
-  return response.data;
+// action types
+const GREETINGLIST = 'greet/GREETINGLIST';
+
+const FetchGreeting = createAsyncThunk(GREETINGLIST, async () => {
+  const options = {
+    method: 'GET',
+    url: 'http://localhost:3000/api/v1/greetings',
+  };
+  const response = await axios.request(options);
+
+  const greeting = response.data;
+  return greeting;
 });
 
-const messageReducer = createSlice({
-  name: 'react-rail/messages',
+const greetingSlice = createSlice({
+  name: 'greeting',
   initialState: {
-    messages: [],
+    data: [],
+    isFulfilled: false,
   },
+
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchMessages.fulfilled,
-      (state, action) => ({ ...state, messages: [...state.messages, action.payload] }));
+    builder.addCase(FetchGreeting.fulfilled, (state, action) => {
+      // eslint-disable-next-line no-param-reassign
+      state.isFulfilled = true;
+      // eslint-disable-next-line no-param-reassign
+      state.data = action.payload;
+    });
   },
 });
 
-export default messageReducer.reducer;
+export default greetingSlice;
+export { FetchGreeting };
