@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 export const fetchMessages = createAsyncThunk('rail-react/messages', async () => {
-  const response = await fetch('http://localhost:3000/api/v1/messages');
-  return response.json();
+  const response = await axios.get('http://localhost:3000/api/v1/greetings');
+  return response.data;
 });
 
 const messageReducer = createSlice({

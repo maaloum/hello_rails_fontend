@@ -19,7 +19,7 @@ const Messages = () => {
         {
           messages.map((message) => (
             <li key={uuidv4()}>
-              <Message name={message.name} text={message.text} />
+              <Message name={message.id} text={message.message} />
             </li>
           ))
         }
